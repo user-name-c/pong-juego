@@ -16,6 +16,10 @@ let computadoraX;
 let computadoraY;
 let velocidadComputadora = 4;
 
+// Marcador
+let puntosJugador = 0;
+let puntosComputadora = 0;
+
 function setup() {
     createCanvas(anchoCanvas, altoCanvas);
     // Inicializar posiciones
@@ -36,6 +40,13 @@ function draw() {
     line(0, 0, anchoCanvas, 0); // Borde superior
     line(0, altoCanvas, anchoCanvas, altoCanvas); // Borde inferior
     noStroke(); // Desactivar el borde para los objetos que siguen
+
+    // Dibujar marcador
+    textSize(32);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(puntosJugador, anchoCanvas / 4, 50);
+    text(puntosComputadora, 3 * anchoCanvas / 4, 50);
 
     // Dibujar pelota
     ellipse(pelotaX, pelotaY, radioPelota * 2, radioPelota * 2);
@@ -65,15 +76,19 @@ function draw() {
         velocidadPelotaX *= -1;
     }
 
-    // Reiniciar si la pelota pasa las raquetas
-    if (pelotaX < 0 || pelotaX > anchoCanvas) {
+    // Anotaciones y reinicio si la pelota pasa las raquetas
+    if (pelotaX < 0) {
+        puntosComputadora++; // Punto para la computadora
+        resetPelota();
+    } else if (pelotaX > anchoCanvas) {
+        puntosJugador++; // Punto para el jugador
         resetPelota();
     }
 
     // Movimiento del jugador
     if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
         jugadorY -= 7;
-    } else if (keyIsDown(DOWN_ARROW ) || keyIsDown(83)) {
+    } else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
         jugadorY += 7;
     }
 
@@ -96,4 +111,3 @@ function resetPelota() {
     pelotaY = altoCanvas / 2;
     velocidadPelotaX *= -1; // Cambiar dirección
 }
-
