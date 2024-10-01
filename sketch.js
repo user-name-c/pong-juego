@@ -67,13 +67,27 @@ function draw() {
     // Rebote en la raqueta del jugador
     if (pelotaX - radioPelota < jugadorX + anchoRaqueta &&
         pelotaY > jugadorY && pelotaY < jugadorY + altoRaqueta) {
+        
+        // Calcular el punto de impacto en la raqueta
+        let puntoImpacto = pelotaY - (jugadorY + altoRaqueta / 2);
+        
+        // Ajustar la trayectoria de la pelota según el punto de impacto
+        let angulo = puntoImpacto / (altoRaqueta / 2); // Valor entre -1 y 1
         velocidadPelotaX *= -1;
+        velocidadPelotaY = angulo * 5; // Modificar la velocidad en Y
     }
 
     // Rebote en la raqueta de la computadora
     if (pelotaX + radioPelota > computadoraX &&
         pelotaY > computadoraY && pelotaY < computadoraY + altoRaqueta) {
+
+        // Calcular el punto de impacto en la raqueta
+        let puntoImpacto = pelotaY - (computadoraY + altoRaqueta / 2);
+        
+        // Ajustar la trayectoria de la pelota según el punto de impacto
+        let angulo = puntoImpacto / (altoRaqueta / 2); // Valor entre -1 y 1
         velocidadPelotaX *= -1;
+        velocidadPelotaY = angulo * 5; // Modificar la velocidad en Y
     }
 
     // Anotaciones y reinicio si la pelota pasa las raquetas
