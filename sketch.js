@@ -1,7 +1,12 @@
 // Variables del juego
 let anchoCanvas = 600;
 let altoCanvas = 400;
-let imagenFondo; // Variable para la imagen de fondo
+
+// Variables para las imágenes
+let imagenFondo, 
+    imagenRaquetaJugador, 
+    imagenRaquetaComputadora, 
+    imagenPelota; 
 
 let pelotaX, pelotaY;
 let velocidadPelotaX = 5;
@@ -22,8 +27,11 @@ let puntosJugador = 0;
 let puntosComputadora = 0;
 
 function preload() {
-    // Cargar la imagen de fondo antes de que comience el juego
+    // Cargar las imágenes antes de que comience el juego
     imagenFondo = loadImage('Sprites/fondo1.png');
+    imagenRaquetaJugador = loadImage('Sprites/barra1.png');
+    imagenRaquetaComputadora = loadImage('Sprites/barra2.png');
+    imagenPelota = loadImage('Sprites/bola.png');
 }
 
 function setup() {
@@ -55,12 +63,13 @@ function draw() {
     text(puntosJugador, anchoCanvas / 4, 50);
     text(puntosComputadora, 3 * anchoCanvas / 4, 50);
     
-    // Dibujar pelota
-    ellipse(pelotaX, pelotaY, radioPelota * 2, radioPelota * 2);
     
-    //Dibujar raquetas
-    rect(jugadorX, jugadorY, anchoRaqueta, altoRaqueta);
-    rect(computadoraX, computadoraY, anchoRaqueta, altoRaqueta);
+    // Dibujar pelota con imagen
+    image(imagenPelota, pelotaX - radioPelota, pelotaY - radioPelota, radioPelota * 2, radioPelota * 2);
+    
+    // Dibujar raquetas con imágenes
+    image(imagenRaquetaJugador, jugadorX, jugadorY, anchoRaqueta, altoRaqueta); // Raqueta del jugador
+    image(imagenRaquetaComputadora, computadoraX, computadoraY, anchoRaqueta, altoRaqueta); // Raqueta de la computadora
   
    // Movimiento de la pelota
     pelotaX += velocidadPelotaX;
