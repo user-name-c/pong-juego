@@ -1,6 +1,7 @@
 // Variables del juego
 let anchoCanvas = 600;
 let altoCanvas = 400;
+let imagenFondo; // Variable para la imagen de fondo
 
 let pelotaX, pelotaY;
 let velocidadPelotaX = 5;
@@ -20,6 +21,11 @@ let velocidadComputadora = 4;
 let puntosJugador = 0;
 let puntosComputadora = 0;
 
+function preload() {
+    // Cargar la imagen de fondo antes de que comience el juego
+    imagenFondo = loadImage('Sprites/fondo1.png');
+}
+
 function setup() {
     createCanvas(anchoCanvas, altoCanvas);
     // Inicializar posiciones
@@ -32,14 +38,15 @@ function setup() {
 }
 
 function draw() {
-    background(0); // Fondo negro
+    // Dibujar la imagen de fondo
+    image(imagenFondo, 0, 0, anchoCanvas, altoCanvas);
 
     // Dibujar bordes
-    stroke(255); // Color del borde
+    stroke(color('red')); // Color del borde
     strokeWeight(10); // Grosor del borde
     line(0, 0, anchoCanvas, 0); // Borde superior
     line(0, altoCanvas, anchoCanvas, altoCanvas); // Borde inferior
-    noStroke(); // Desactivar el borde para los objetos que siguen
+    noStroke();
 
     // Dibujar marcador
     textSize(32);
@@ -47,15 +54,15 @@ function draw() {
     textAlign(CENTER, CENTER);
     text(puntosJugador, anchoCanvas / 4, 50);
     text(puntosComputadora, 3 * anchoCanvas / 4, 50);
-
+    
     // Dibujar pelota
     ellipse(pelotaX, pelotaY, radioPelota * 2, radioPelota * 2);
     
-    // Dibujar raquetas
-    rect(jugadorX, jugadorY, anchoRaqueta, altoRaqueta); // Raqueta del jugador
-    rect(computadoraX, computadoraY, anchoRaqueta, altoRaqueta); // Raqueta de la computadora
-    
-    // Movimiento de la pelota
+    //Dibujar raquetas
+    rect(jugadorX, jugadorY, anchoRaqueta, altoRaqueta);
+    rect(computadoraX, computadoraY, anchoRaqueta, altoRaqueta);
+  
+   // Movimiento de la pelota
     pelotaX += velocidadPelotaX;
     pelotaY += velocidadPelotaY;
 
@@ -124,4 +131,4 @@ function resetPelota() {
     pelotaX = anchoCanvas / 2;
     pelotaY = altoCanvas / 2;
     velocidadPelotaX *= -1; // Cambiar dirección
-}
+} 
