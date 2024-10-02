@@ -27,12 +27,28 @@ let velocidadComputadora = 4;
 let puntosJugador = 0;
 let puntosComputadora = 0;
 
+// Variable para el sonido
+let sonidoRebote;
+let sonidoAnotacion;
+
+// Función para narrar el marcador
+function narrarMarcador() {
+    let narrador = window.speechSynthesis;
+    let texto = `El marcador es ${puntosJugador} a ${puntosComputadora}`;
+    let mensaje = new SpeechSynthesisUtterance(texto);
+    narrador.speak(mensaje);
+}
+
 function preload() {
     // Cargar las imágenes antes de que comience el juego
     imagenFondo = loadImage('Sprites/fondo1.png');
     imagenRaquetaJugador = loadImage('Sprites/barra1.png');
     imagenRaquetaComputadora = loadImage('Sprites/barra2.png');
     imagenPelota = loadImage('Sprites/bola.png');
+
+    // Cargar el sonido de rebote
+    sonidoRebote = loadSound('sounds/bounce.wav');
+    sonidoAnotacion = loadSound('sounds/game_over_mono.wav');
 }
 
 function setup() {
@@ -85,6 +101,7 @@ function draw() {
     // Rebote en la parte superior e inferior (considerando el radio de la pelota)
     if (pelotaY - radioPelota < 0 || pelotaY + radioPelota > altoCanvas) {
         velocidadPelotaY *= -1;
+        sonidoRebote.play(); // Reproduce sonido rebote
     }
 
     // Rebote en la raqueta del jugador
@@ -97,6 +114,8 @@ function draw() {
         let angulo = puntoImpacto / (altoRaqueta / 2); // Valor entre -1 y 1
         velocidadPelotaX *= -1;
         velocidadPelotaY = angulo * 5;
+
+        sonidoRebote.play(); // Reproduce sonido rebote
     }
 
     // Rebote en la raqueta de la computadora
@@ -110,14 +129,20 @@ function draw() {
         let angulo = puntoImpacto / (altoRaqueta / 2); // Valor entre -1 y 1
         velocidadPelotaX *= -1;
         velocidadPelotaY = angulo * 5;
+
+        sonidoRebote.play(); // Reproduce sonido rebote
     }
 
     // Anotaciones y reinicio
     if (pelotaX < 0) {
         puntosComputadora++;
+        sonidoAnotacion.play(); // Reproducir el sonido de anotación
+        narrarMarcador(); // Llamar a la narración del marcador
         resetPelota();
     } else if (pelotaX > anchoCanvas) {
         puntosJugador++;
+        sonidoAnotacion.play(); // Reproducir el sonido de anotación
+        narrarMarcador(); // Llamar a la narración del marcador
         resetPelota();
     }
 
