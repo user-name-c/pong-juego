@@ -6,12 +6,13 @@ let altoCanvas = 400;
 let imagenFondo, 
     imagenRaquetaJugador, 
     imagenRaquetaComputadora, 
-    imagenPelota; 
+    imagenPelota;
 
 let pelotaX, pelotaY;
 let velocidadPelotaX = 5;
 let velocidadPelotaY = 3;
 let radioPelota = 10;
+let anguloPelota = 0;
 
 let jugadorX = 10;
 let jugadorY;
@@ -62,16 +63,22 @@ function draw() {
     textAlign(CENTER, CENTER);
     text(puntosJugador, anchoCanvas / 4, 50);
     text(puntosComputadora, 3 * anchoCanvas / 4, 50);
-    
-    
+
+    // Calcular el ángulo de rotación basado en la velocidad de la pelota
+    anguloPelota += (abs(velocidadPelotaX) + abs(velocidadPelotaY)) * 0.05; // Ajustar la velocidad del giro si es necesario
+  
     // Dibujar pelota con imagen
-    image(imagenPelota, pelotaX - radioPelota, pelotaY - radioPelota, radioPelota * 2, radioPelota * 2);
+    push(); // Guardar la transformación actual
+    translate(pelotaX, pelotaY); // Mover el origen de coordenadas al centro de la pelota
+    rotate(anguloPelota); // Rotar la pelota
+    image(imagenPelota, - radioPelota, - radioPelota, radioPelota * 2, radioPelota * 2);
+    pop(); // Restaurar la transformación
     
     // Dibujar raquetas con imágenes
     image(imagenRaquetaJugador, jugadorX, jugadorY, anchoRaqueta, altoRaqueta); // Raqueta del jugador
     image(imagenRaquetaComputadora, computadoraX, computadoraY, anchoRaqueta, altoRaqueta); // Raqueta de la computadora
-  
-   // Movimiento de la pelota
+
+    // Movimiento de la pelota
     pelotaX += velocidadPelotaX;
     pelotaY += velocidadPelotaY;
 
@@ -84,13 +91,12 @@ function draw() {
     if (pelotaX - radioPelota < jugadorX + anchoRaqueta &&
         pelotaY > jugadorY && pelotaY < jugadorY + altoRaqueta) {
         
-        // Calcular el punto de impacto en la raqueta
         let puntoImpacto = pelotaY - (jugadorY + altoRaqueta / 2);
         
         // Ajustar la trayectoria de la pelota según el punto de impacto
         let angulo = puntoImpacto / (altoRaqueta / 2); // Valor entre -1 y 1
         velocidadPelotaX *= -1;
-        velocidadPelotaY = angulo * 5; // Modificar la velocidad en Y
+        velocidadPelotaY = angulo * 5;
     }
 
     // Rebote en la raqueta de la computadora
@@ -103,15 +109,15 @@ function draw() {
         // Ajustar la trayectoria de la pelota según el punto de impacto
         let angulo = puntoImpacto / (altoRaqueta / 2); // Valor entre -1 y 1
         velocidadPelotaX *= -1;
-        velocidadPelotaY = angulo * 5; // Modificar la velocidad en Y
+        velocidadPelotaY = angulo * 5;
     }
 
-    // Anotaciones y reinicio si la pelota pasa las raquetas
+    // Anotaciones y reinicio
     if (pelotaX < 0) {
-        puntosComputadora++; // Punto para la computadora
+        puntosComputadora++;
         resetPelota();
     } else if (pelotaX > anchoCanvas) {
-        puntosJugador++; // Punto para el jugador
+        puntosJugador++;
         resetPelota();
     }
 
@@ -132,7 +138,7 @@ function draw() {
         computadoraY -= velocidadComputadora;
     }
 
-    // Mantener la raqueta de la computadora dentro del canvas (sin atravesar bordes)
+    // Mantener la raqueta de la computadora dentro del canvas
     computadoraY = constrain(computadoraY, 0, altoCanvas - altoRaqueta);
 }
 
@@ -140,4 +146,4 @@ function resetPelota() {
     pelotaX = anchoCanvas / 2;
     pelotaY = altoCanvas / 2;
     velocidadPelotaX *= -1; // Cambiar dirección
-} 
+}
